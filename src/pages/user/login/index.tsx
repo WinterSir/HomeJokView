@@ -49,11 +49,64 @@ const Login: React.FC<{}> = () => {
     try {
       // 登录
       const msg = await fakeAccountLogin({ ...values, type });
-      if (msg.status === 'ok') {
+      if (msg.responseState) {
         message.success('登录成功！');
-        localStorage.setItem("currentUser", JSON.stringify({ user: values.username, token: "" }));
+        localStorage.setItem("currentUser", JSON.stringify({
+          name: values.username,
+          avatar: 'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png',
+          userid: '00000001',
+          email: 'antdesign@alipay.com',
+          signature: '海纳百川，有容乃大',
+          title: '交互专家',
+          group: '蚂蚁金服－某某某事业群－某某平台部－某某技术部－UED',
+          tags: [
+            {
+              key: '0',
+              label: '很有想法的',
+            },
+            {
+              key: '1',
+              label: '专注设计',
+            },
+            {
+              key: '2',
+              label: '辣~',
+            },
+            {
+              key: '3',
+              label: '大长腿',
+            },
+            {
+              key: '4',
+              label: '川妹子',
+            },
+            {
+              key: '5',
+              label: '海纳百川',
+            },
+          ],
+          notifyCount: 12,
+          unreadCount: 11,
+          country: 'China',
+          access: values.username,
+          geographic: {
+            province: {
+              label: '浙江省',
+              key: '330000',
+            },
+            city: {
+              label: '杭州市',
+              key: '330100',
+            },
+          },
+          address: '西湖区工专路 77 号',
+          phone: '0752-268888888',
+        }));
         goto();
         return;
+      }
+      else {
+        message.error("用户名或密码错误");
       }
       // 如果失败去设置用户错误信息
       setUserLoginState(msg);
@@ -62,6 +115,7 @@ const Login: React.FC<{}> = () => {
     }
     setSubmitting(false);
   };
+
   const { status, type: loginType } = userLoginState;
 
   return (
@@ -80,6 +134,7 @@ const Login: React.FC<{}> = () => {
 
         <div className={styles.main}>
           <ProForm
+            autoComplete="off"
             initialValues={{
               autoLogin: true,
             }}
@@ -136,10 +191,7 @@ const Login: React.FC<{}> = () => {
                     size: 'large',
                     prefix: <UserOutlined className={styles.prefixIcon} />,
                   }}
-                  placeholder={intl.formatMessage({
-                    id: 'pages.login.username.placeholder',
-                    defaultMessage: '用户名: admin or user',
-                  })}
+                  placeholder={"用户名: wintersir"}
                   rules={[
                     {
                       required: true,
@@ -158,10 +210,7 @@ const Login: React.FC<{}> = () => {
                     size: 'large',
                     prefix: <LockTwoTone className={styles.prefixIcon} />,
                   }}
-                  placeholder={intl.formatMessage({
-                    id: 'pages.login.password.placeholder',
-                    defaultMessage: '密码: ant.design',
-                  })}
+                  placeholder={"密码: homejok.com"}
                   rules={[
                     {
                       required: true,

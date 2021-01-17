@@ -5,16 +5,15 @@ import { history, RequestConfig } from 'umi';
 import RightContent from '@/components/RightContent';
 import Footer from '@/components/Footer';
 import { ResponseError } from 'umi-request';
-import { queryCurrent } from './services/user';
+// import { queryCurrent } from './services/user';
 import defaultSettings from '../config/defaultSettings';
 
 /**
  * 获取用户信息比较慢的时候会展示一个 loading
  */
-
-// export const initialStateConfig = {
-//   loading: <PageLoading />,
-// };
+export const initialStateConfig = {
+  loading: <PageLoading />,
+};
 
 export async function getInitialState(): Promise<{
   settings?: LayoutSettings;
@@ -23,9 +22,12 @@ export async function getInitialState(): Promise<{
 }> {
   const fetchUserInfo = async () => {
     try {
-      const currentUser = await queryCurrent();
-      return currentUser;
+      // const currentUser = await queryCurrent();
+      // return currentUser;
+      const currentUser = JSON.parse(localStorage.getItem("currentUser") || '');
+      return currentUser === '' ? undefined : currentUser;
     } catch (error) {
+      console.log(error);
       history.push('/user/login');
     }
     return undefined;
@@ -53,7 +55,7 @@ export const layout = ({
   return {
     rightContentRender: () => <RightContent />,
     disableContentMargin: false,
-    // footerRender: () => <Footer />,
+    footerRender: () => <Footer />,
     onPageChange: () => {
       const { currentUser } = initialState;
       const { location } = history;
